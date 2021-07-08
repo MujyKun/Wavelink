@@ -72,6 +72,8 @@ class Client:
 
         self._dumps = dumps
 
+        self.bot_user_id = None
+
         bot.add_listener(self.update_handler, 'on_socket_response')
 
     @property
@@ -94,7 +96,10 @@ class Client:
         int:
             The bots user ID.
         """
-        return self.bot.user.id
+        try:
+            return self.bot.user.id
+        except:
+            return self.bot_user_id
 
     @property
     def players(self) -> dict:
@@ -404,7 +409,7 @@ class Client:
         NodeOccupied
             A node with provided identifier already exists.
         """
-        await self.bot.wait_until_ready()
+        # await self.bot.wait_until_ready()
 
         if identifier in self.nodes:
             node = self.nodes[identifier]

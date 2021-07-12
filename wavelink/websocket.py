@@ -81,6 +81,8 @@ class WebSocket:
 
             if isinstance(error, aiohttp.WSServerHandshakeError) and error.status == 401:
                 print(f'\nAuthorization Failed for Node:: {self._node}\n', file=sys.stderr)
+            elif isinstance(error, aiohttp.ClientConnectionError):
+                raise error
             else:
                 __log__.error(f'WEBSOCKET | Connection Failure:: {error}')
                 traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)

@@ -57,7 +57,7 @@ class Websocket:
     def headers(self) -> Dict[str, Any]:
         return {
             "Authorization": self.node._password,
-            "User-Id": str(self.node.bot.user.id),
+            "User-Id": self.node.bot_id if self.node.bot_id else str(self.node.bot.user.id),
             "Client-Name": "WaveLink",
         }
 

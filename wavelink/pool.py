@@ -36,7 +36,7 @@ from typing import (
     Optional,
     Tuple,
     Type,
-    TypeVar,
+    TypeVar, Union,
 )
 
 import aiohttp
@@ -84,7 +84,7 @@ class Node:
     def __init__(
         self,
         bot: discord.Client,
-        bot_id: Optional[int],
+        bot_id: Optional[str],
         host: str,
         port: int,
         password: str,
@@ -96,7 +96,7 @@ class Node:
         dumps: Callable[[Any], str],
     ):
         self.bot: discord.Client = bot
-        self.bot_id: int = bot_id
+        self.bot_id: str = bot_id
         self._host: str = host
         self._port: int = port
         self._password: str = password
@@ -352,7 +352,7 @@ class NodePool:
         cls,
         *,
         bot: discord.Client,
-        bot_id: Optional[int],
+        bot_id: Optional[Union[int, str]],
         host: str,
         port: int,
         password: str,
@@ -404,6 +404,9 @@ class NodePool:
             raise NodeOccupied(
                 f"A node with identifier <{identifier}> already exists in this pool."
             )
+
+        if isinstance(bot_id, int):
+            bot_id = str(bot_id)
 
         node = Node(
             bot=bot,

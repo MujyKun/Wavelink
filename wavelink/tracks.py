@@ -283,6 +283,9 @@ class PartialTrack(Searchable):
         if not issubclass(cls, SearchableTrack):
             raise TypeError(f"cls parameter must be of type {SearchableTrack!r} not {cls!r}")
 
+    def __str__(self):
+        return self.title
+
     async def _search(self):
         node = self._node
         if node is MISSING:

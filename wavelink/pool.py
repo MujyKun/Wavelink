@@ -36,7 +36,7 @@ from typing import (
     Optional,
     Tuple,
     Type,
-    TypeVar,
+    TypeVar, Union,
 )
 
 import aiohttp
@@ -84,6 +84,7 @@ class Node:
     def __init__(
         self,
         bot: discord.Client,
+        bot_id: Optional[str],
         host: str,
         port: int,
         password: str,
@@ -95,6 +96,7 @@ class Node:
         dumps: Callable[[Any], str],
     ):
         self.bot: discord.Client = bot
+        self.bot_id: str = bot_id
         self._host: str = host
         self._port: int = port
         self._password: str = password
@@ -350,6 +352,7 @@ class NodePool:
         cls,
         *,
         bot: discord.Client,
+        bot_id: Optional[Union[int, str]],
         host: str,
         port: int,
         password: str,
@@ -369,6 +372,8 @@ class NodePool:
         ----------
         bot: Union[:class:`discord.Client`]
             The discord.py Bot or Client class.
+        bot_id: Optional[:class:`int`]
+            The Bot ID. Useful for creating nodes before discord.py cache is loaded.
         host: :class:`str`
             The lavalink host address.
         port: :class:`int`
@@ -400,8 +405,12 @@ class NodePool:
                 f"A node with identifier <{identifier}> already exists in this pool."
             )
 
+        if isinstance(bot_id, int):
+            bot_id = str(bot_id)
+
         node = Node(
             bot=bot,
+            bot_id=bot_id,
             host=host,
             port=port,
             password=password,

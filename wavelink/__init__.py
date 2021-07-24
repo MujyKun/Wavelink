@@ -28,10 +28,12 @@ __copyright__ = "Copyright 2019-2021 (c) Pythonista, EvieePy"
 __version__ = "{{__VERSION__}}"
 
 
+from .backoff import Backoff
 from .enums import *
 from .errors import *
 from .player import *
 from .pool import *
+from .stats import Stats
 from .tracks import *
 from .queue import *
 from . import abc as abc
